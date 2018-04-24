@@ -8,7 +8,7 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
 
-const DCPay = require('../sdkbox/dcpay/dcpay');
+const ETHWallet = require('../sdkbox/ethwallet/ethwallet');
 
 cc.Class({
     extends: cc.Component,
@@ -69,22 +69,22 @@ cc.Class({
     // update (dt) {},
 
     initSBPay() {
-        let dcPay = new DCPay();
-        this.log(`SBPay version: ${dcPay.version.versionName}`);
-        if (dcPay.init(this.PROVIDER_URL)) {
-            this.log('DCPay init success');
+        let ethwallet = new ETHWallet();
+        this.log(`ETHWallet version: ${ethwallet.version.versionName}`);
+        if (ethwallet.init(this.PROVIDER_URL)) {
+            this.log('ETHWallet init success');
         } else {
-            this.log('DCPay init failed');
+            this.log('ETHWallet init failed');
             return;
         }
 
-        this.dcPay = dcPay;
+        this.ethwallet = ethwallet;
         this.loadAddress();
     },
 
     onCheckBalance() {
         let self = this;
-        this.dcPay.getBalance(function(result){
+        this.ethwallet.getBalance(function(result){
             self.log(JSON.stringify(result));
             self.banlanceButton.getComponentInChildren(cc.Label).string = `Check Ether:${result.balance}`;
         }, this.acc.address);
@@ -92,7 +92,7 @@ cc.Class({
 
     onTransToCoin() {
         let self = this;
-        this.dcPay.remit(function(result) {
+        this.ethwallet.remit(function(result) {
             self.log(JSON.stringify(result));
 
             if (result.error) {
@@ -116,9 +116,9 @@ cc.Class({
     },
 
     loadAddress() {
-        let dcPay = this.dcPay;
+        let ethwallet = this.ethwallet;
         let pw = 'password';
-        let acc = dcPay.newAccountIf(pw);
+        let acc = ethwallet.newAccountIf(pw);
         pw = null;
 
         this.log(`address: ${acc.address}`);
