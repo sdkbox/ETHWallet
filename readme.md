@@ -1,4 +1,7 @@
-# DCPay
+# ETH Wallet
 
-this is a digit coin pay demo
+this is a ether pay demo
+
+
+![](./images/ethwallet.png)
 
